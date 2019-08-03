@@ -211,6 +211,14 @@ cdef class BloomFilter:
             item = item_.encode()
             key.shash = item
             key.nhash = len(item)
+        elif isinstance(item_, bytes):
+            item = item_
+            key.shash = item
+            key.nhash = len(item)
+        elif isinstance(item_, (int,long)):
+            item = item_
+            key.shash = NULL
+            key.nhash = item
         else:
             item = item_
             key.shash = NULL
@@ -240,6 +248,14 @@ cdef class BloomFilter:
             item = item_.encode()
             key.shash = item
             key.nhash = len(item)
+        elif isinstance(item_, bytes):
+            item = item_
+            key.shash = item
+            key.nhash = len(item)
+        elif isinstance(item_, (int,long)):
+            item = item_
+            key.shash = NULL
+            key.nhash = item
         else:
             item = item_
             key.shash = NULL
