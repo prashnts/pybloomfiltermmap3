@@ -18,6 +18,7 @@ ext_files = [
     "src/mmapbitarray.c",
     "src/bloomfilter.c",
     "src/md5.c",
+    "src/xxhash.c",
     "src/primetester.c",
     "src/MurmurHash3.c",
 ]
