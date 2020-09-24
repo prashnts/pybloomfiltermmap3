@@ -323,6 +323,10 @@ cdef class BloomFilter:
             item = item_.encode()
             key.shash = item
             key.nhash = len(item)
+        elif isinstance(item_, bytes):
+            item = item_
+            key.shash = item
+            key.nhash = len(item)
         else:
             item = item_
             key.shash = NULL
@@ -372,6 +376,10 @@ cdef class BloomFilter:
         cdef cbloomfilter.Key key
         if isinstance(item_, str):
             item = item_.encode()
+            key.shash = item
+            key.nhash = len(item)
+        elif isinstance(item_, bytes):
+            item = item_
             key.shash = item
             key.nhash = len(item)
         else:

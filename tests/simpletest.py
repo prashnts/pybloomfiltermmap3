@@ -356,6 +356,22 @@ class SimpleTestCase(unittest.TestCase):
         # Should be identical as data was hashed into the same locations
         assert bf1_ba ^ bf2_ba == 0
 
+    def test_add_contains(self):
+        values = [
+            '',
+            'string',
+            b'',
+            b'bytes',
+            True,
+            False,
+            0,
+            10,
+        ]
+        for value in values:
+            bf = pybloomfilter.BloomFilter(1000, 0.1)
+            bf.add(value)
+            assert value in bf
+
 
 def suite():
     suite = unittest.TestSuite()
