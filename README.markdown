@@ -38,10 +38,21 @@ interface and an ste interface. As an example:
 
 To create an in-memory filter, simply omit the file location:
 ```python
-    >>> cakes = pybloomfilter.BloomFilter(10000, 0.1)
+    >>> fruit = pybloomfilter.BloomFilter(10000, 0.1)
+    >>> fruit.add('apple')
+    >>> 'apple' in fruit
+    True
 ```
-*Caveat*: it is currently not possible to persist this filter later.
 
+These in-memory filters can be pickled and reloaded:
+```python
+    >>> import pickle
+    >>> data = pickle.dumps(fruit)
+    >>> trees = pickle.loads(data)
+    >>> 'apple' in trees
+    True
+```
+*Caveat*: it is currently not possible to persist this filter later as an mmap file.
 
 ## Docs
 

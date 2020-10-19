@@ -175,7 +175,6 @@ cdef class BloomFilter:
         else:
             self._in_memory = 1
             if data_array is not None:
-                print(f"Inserting data array of length {len(data_array)} with num_bits {num_bits}")
                 data = data_array
             self._bf = cbloomfilter.bloomfilter_Create_Malloc(capacity,
                                                     error_rate,
