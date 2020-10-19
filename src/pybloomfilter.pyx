@@ -5,9 +5,6 @@ AUTHOR = "Michael Axiak"
 
 __VERSION__ = VERSION
 
-from libc.stdlib cimport malloc
-from libc.string cimport strncpy
-
 cimport cbloomfilter
 cimport cpython
 
@@ -64,7 +61,9 @@ cdef class BloomFilter:
     :param list hash_seeds: optionally specify hash seeds to use for the
         hashing algorithm. Each hash seed must not exceed 32 bits. The number
         of hash seeds will determine the number of hashes performed.
-    :param bytes data_array: optionally specify data array, same as .
+    :param bytes data_array: optionally specify the filter data array, same as
+        given by BloomFilter.data_array. Only valid for in-memory bloomfilters.
+        If provided, hash_seeds must be given too.
 
     **Note that we do not check capacity.** This is important, because
     we want to be able to support logical OR and AND (see :meth:`BloomFilter.union`
@@ -106,6 +105,12 @@ cdef class BloomFilter:
         cdef char * data = NULL
         cdef long long num_bits
 
+        if data_array is not None:
+            if filename:
+                raise ValueError("data_array cannot be used for an mmapped filter.")
+            if hash_seeds is None:
+                raise ValueError("hash_seeds must be specified if a data_array is provided.")
+             
         # Make sure that if the filename is defined, that the
         # file exists
         if filename and os.path.exists(filename):
@@ -227,9 +232,9 @@ cdef class BloomFilter:
         """Bytes array of the Bloom filter contents.
         """
         self._assert_open()
-        start_pos = 0
-        end_pos = start_pos + self._bf.array.bytes + self._bf.array.preamblebytes
-        arr = array.array('I')
+        start_pos = self._bf.array.preamblebytes
+        end_pos = start_pos + self._bf.array.bytes 
+        arr = array.array('B')
         arr.frombytes(
             (<char *>cbloomfilter.mbarray_CharData(self._bf.array))[start_pos:end_pos]
         )
