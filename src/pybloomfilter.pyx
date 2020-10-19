@@ -5,6 +5,8 @@ AUTHOR = "Michael Axiak"
 
 __VERSION__ = VERSION
 
+from libc.stdlib cimport malloc
+from libc.string cimport strncpy
 
 cimport cbloomfilter
 cimport cpython
@@ -62,6 +64,7 @@ cdef class BloomFilter:
     :param list hash_seeds: optionally specify hash seeds to use for the
         hashing algorithm. Each hash seed must not exceed 32 bits. The number
         of hash seeds will determine the number of hashes performed.
+    :param bytes data_array: optionally specify data array, same as .
 
     **Note that we do not check capacity.** This is important, because
     we want to be able to support logical OR and AND (see :meth:`BloomFilter.union`
@@ -80,7 +83,14 @@ cdef class BloomFilter:
     cdef int _in_memory
     cdef int _oflags
 
-    def __cinit__(self, capacity, error_rate, filename=None, perm=0755, hash_seeds=None):
+    def __reduce__(self):
+        """Makes an in-memory BloomFilter pickleable."""
+        callable = BloomFilter
+        args = (self.capacity, self.error_rate, None, None, self.hash_seeds, self.data_array)
+        return (callable, args)
+
+
+    def __cinit__(self, capacity, error_rate, filename=None, perm=0755, hash_seeds=None, data_array=None):
         self._closed = 0
         self._in_memory = 0
         self._oflags = os.O_RDWR
@@ -88,10 +98,12 @@ cdef class BloomFilter:
         if capacity is NoConstruct:
             return
 
-        self._create(capacity, error_rate, filename, perm, hash_seeds)
+        self._create(capacity, error_rate, filename, perm, hash_seeds, data_array)
 
-    def _create(self, capacity, error_rate, filename=None, perm=0755, hash_seeds=None):
+
+    def _create(self, capacity, error_rate, filename=None, perm=0755, hash_seeds=None, data_array=None):
         cdef char * seeds
+        cdef char * data = NULL
         cdef long long num_bits
 
         # Make sure that if the filename is defined, that the
@@ -135,6 +147,10 @@ cdef class BloomFilter:
         # Minimum bit vector of 128 bits
         num_bits = max(num_hashes * bits_per_hash,128)
 
+        # Override calculated capacity if we are provided a data array
+        if data_array is not None:
+            num_bits = 8 * len(data_array)
+
         # print("k = %d  m = %d  n = %d   p ~= %.8f" % (
         #     num_hashes, num_bits, capacity,
         #     (1.0 - math.exp(- float(num_hashes) * float(capacity) / num_bits))
@@ -153,17 +169,21 @@ cdef class BloomFilter:
                                                     num_hashes)
         else:
             self._in_memory = 1
+            if data_array is not None:
+                print(f"Inserting data array of length {len(data_array)} with num_bits {num_bits}")
+                data = data_array
             self._bf = cbloomfilter.bloomfilter_Create_Malloc(capacity,
                                                     error_rate,
                                                     num_bits,
                                                     <int *>seeds,
-                                                    num_hashes)
+                                                    num_hashes, <const char *>data)
         if self._bf is NULL:
             if filename:
                 raise OSError(errno, '%s: %s' % (os.strerror(errno),
                                                     filename))
             else:
                 cpython.PyErr_NoMemory()
+
 
     def _open(self, filename, mode="rw"):
         # Should not overwrite
@@ -201,6 +221,19 @@ cdef class BloomFilter:
         end_pos = start_pos + self._bf.array.bytes
         arr = (<char *>cbloomfilter.mbarray_CharData(self._bf.array))[start_pos:end_pos]
         return int.from_bytes(arr, byteorder="big", signed=False)
+
+    @property
+    def data_array(self):
+        """Bytes array of the Bloom filter contents.
+        """
+        self._assert_open()
+        start_pos = 0
+        end_pos = start_pos + self._bf.array.bytes + self._bf.array.preamblebytes
+        arr = array.array('I')
+        arr.frombytes(
+            (<char *>cbloomfilter.mbarray_CharData(self._bf.array))[start_pos:end_pos]
+        )
+        return bytes(arr)
 
     @property
     def hash_seeds(self):
@@ -345,6 +378,7 @@ cdef class BloomFilter:
             key.shash = item
             key.nhash = len(item)
         else:
+            # Warning! Only works reliably for objects whose hash is based on value not memory address.
             item = item_
             key.shash = NULL
             key.nhash = hash(item)
