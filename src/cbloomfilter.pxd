@@ -20,6 +20,7 @@ cdef extern from "mmapbitarray.h":
      MBArray * mbarray_Or_Ternary(MBArray * dest, MBArray * a, MBArray * b)
      MBArray * mbarray_Xor_Ternary(MBArray * dest, MBArray * a, MBArray * b)
      int mbarray_Update(MBArray * array, char * data, int size)
+     int mbarray_BitCount(MBArray * array)
      int mbarray_FileSize(MBArray * array)
      char * mbarray_CharData(MBArray * array)
 

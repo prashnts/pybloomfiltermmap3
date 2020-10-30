@@ -360,6 +360,25 @@ MBArray * mbarray_Copy_Template(MBArray * src, char * filename, int perms)
                           perms);
 }
 
+uint64_t mbarray_BitCount(MBArray * array)
+{
+    size_t i, count;
+    uint64_t total = 0;
+    DTYPE x;
+    if (!array || !array->vector) {
+        return 0;
+    }
+
+    for (i = array->preamblesize; i < array->size + array->preamblesize; i++) {
+        x = array->vector[i];
+        for (count = 0; x; ++count) {
+            // clear the least significant bit set
+            x &= x - 1;
+        }
+        total += count;
+    }
+    return total;
+}
 
 /*MBArray * mbarray_Copy(MBarray * src, const char * filename);*/
 uint64_t mbarray_FileSize(MBArray * array)

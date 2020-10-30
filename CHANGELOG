@@ -7,6 +7,19 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog <https://keepachangelog.com/en/1.0.0/>`_,
 and this project adheres to `Semantic Versioning <https://semver.org/spec/v2.0.0.html>`_.
 
+[Unreleased]
+------------
+
+Added
+^^^^^
+- Added `BitCount` to get approximate count of elements in the set. (@xyb)
+- Added :meth:`BloomFilter.approx_len` and :meth:`BloomFilter.bit_count` properties.
+
+Changes
+^^^^^^^
+- Calling `len(bloomfilter)` now reports approximate element count if any set union or intersection was performed.
+
+
 `0.5.3`_ (2020-08-22)
 ---------------------
 .. _0.5.3: https://github.com/prashnts/pybloomfiltermmap3/releases/tag/0.5.3
