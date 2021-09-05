@@ -81,7 +81,7 @@ Package installation depends on a generated `pybloomfilter.c` file, which requir
 ## Maintainers
 
 * [Prashant Sinha](https://github.com/prashnts)
-* [Vytautas Mizgiris](https://github.com/mizvyt)
+* [Vytautas Mizgiris](https://github.com/vmizg)
 
 
 ## License
