@@ -57,7 +57,7 @@ ext_modules = [Extension("pybloomfilter", ext_files)]
 
 setup(
     name="pybloomfiltermmap3",
-    version="0.5.4",
+    version="0.5.5",
     author="Prashant Sinha",
     author_email="prashant@noop.pw",
     url="https://github.com/prashnts/pybloomfiltermmap3",
