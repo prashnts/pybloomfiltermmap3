@@ -1,6 +1,6 @@
 # cython: language_level=3
 
-VERSION = (0, 5, 6)
+VERSION = (0, 5, 7)
 AUTHOR = "Michael Axiak"
 
 __VERSION__ = VERSION
