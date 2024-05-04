@@ -31,12 +31,12 @@ BloomFilter *bloomfilter_Create_Malloc(size_t max_num_elem, double error_rate,
     memset(bf->hash_seeds, 0, sizeof(uint32_t) * 256);
     memcpy(bf->hash_seeds, hash_seeds, sizeof(uint32_t) * num_hashes);
     array = mbarray_Create_Malloc(num_bits);
-    if (data) {
-        memcpy(array->vector, data, num_bits / 8);
-    }
     if (!array) {
         bloomfilter_Destroy(bf);
         return NULL;
+    }
+    if (data) {
+        memcpy(array->vector, data, num_bits / 8);
     }
 
     bf->array = array;
