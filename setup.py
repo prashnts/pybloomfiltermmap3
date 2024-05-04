@@ -9,7 +9,7 @@ if sys.version_info < (3, 5):
 here = os.path.dirname(__file__)
 
 # Get the long description from the README file
-with open(os.path.join(here, "README.markdown"), encoding="utf-8") as fp:
+with open(os.path.join(here, "README.md"), encoding="utf-8") as fp:
     long_description = fp.read()
 
 setup_kwargs = {}

@@ -1,6 +1,6 @@
 include CHANGELOG
 include LICENSE
 include AUTHORS
-include README.markdown
+include README.md
 recursive-include src *
 recursive-include tests *
