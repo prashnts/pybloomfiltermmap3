@@ -2,6 +2,7 @@ import os
 import string
 import unittest
 import tempfile
+import pickle
 from random import randint, choice, getrandbits
 
 import pybloomfilter
@@ -400,6 +401,19 @@ class SimpleTestCase(unittest.TestCase):
         intersection = len(bf1) + len(bf2) - len(union_bf)
         assert intersection == 11  # approximate size
 
+    def test_pickle(self):
+        bf = pybloomfilter.BloomFilter(100, 0.1)
+        bf.add('apple')
+        assert 'apple' in bf
+        assert 'hello' not in bf
+
+        pickled = pickle.dumps(bf)
+        unpickled = pickle.loads(pickled)
+        assert 'apple' in unpickled
+        assert 'hello' not in unpickled
+
+        # Expecting same hashing sequence
+        self.assertEqual(bf.bit_array, unpickled.bit_array)
 
 def suite():
     suite = unittest.TestSuite()

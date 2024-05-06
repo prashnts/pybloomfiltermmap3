@@ -9,7 +9,7 @@
 #include "bloomfilter.h"
 
 BloomFilter *bloomfilter_Create_Malloc(size_t max_num_elem, double error_rate,
-                                BTYPE num_bits, int *hash_seeds, int num_hashes)
+                                BTYPE num_bits, int *hash_seeds, int num_hashes, const char *data)
 {
     BloomFilter * bf = (BloomFilter *)malloc(sizeof(BloomFilter));
     MBArray * array;
@@ -34,6 +34,9 @@ BloomFilter *bloomfilter_Create_Malloc(size_t max_num_elem, double error_rate,
     if (!array) {
         bloomfilter_Destroy(bf);
         return NULL;
+    }
+    if (data) {
+        memcpy(array->vector, data, num_bits / 8);
     }
 
     bf->array = array;

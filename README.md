@@ -10,20 +10,19 @@ The goal of `pybloomfiltermmap3` is simple: to provide a fast, simple, scalable,
 [![PyPI](https://img.shields.io/pypi/dw/pybloomfiltermmap3.svg)](https://pypi.python.org/pypi/pybloomfiltermmap3)
 [![PyPI](https://img.shields.io/pypi/pyversions/pybloomfiltermmap3.svg)](https://pypi.python.org/pypi/pybloomfiltermmap3)
 
-
 ## Why pybloomfiltermmap3?
 
 There are a couple reasons to use this module:
 
-* It natively uses [mmaped files](http://en.wikipedia.org/wiki/Mmap).
-* It is fast (see [benchmarks](http://axiak.github.io/pybloomfiltermmap/#benchmarks)).
-* It natively does the set things you want a Bloom filter to do.
-
+- It natively uses [mmapped files](http://en.wikipedia.org/wiki/Mmap).
+- It is fast (see [benchmarks](http://axiak.github.io/pybloomfiltermmap/#benchmarks)).
+- It natively does the set things you want a Bloom filter to do.
 
 ## Quickstart
 
 After you install, the interface to use is a cross between a file
 interface and an ste interface. As an example:
+
 ```python
     >>> import pybloomfilter
     >>> fruit = pybloomfilter.BloomFilter(100000, 0.1, '/tmp/words.bloom')
@@ -37,23 +36,36 @@ interface and an ste interface. As an example:
 ```
 
 To create an in-memory filter, simply omit the file location:
-```python
-    >>> cakes = pybloomfilter.BloomFilter(10000, 0.1)
-```
-*Caveat*: it is currently not possible to persist this filter later.
 
+```python
+    >>> fruit = pybloomfilter.BloomFilter(10000, 0.1)
+    >>> fruit.add('apple')
+    >>> 'apple' in fruit
+    True
+```
+
+These in-memory filters can be pickled and reloaded:
+
+```python
+    >>> import pickle
+    >>> pickled_fruit = pickle.dumps(fruit)
+    >>> unpickled_fruit = pickle.loads(pickled_fruit)
+    >>> 'apple' in unpickled_fruit
+    True
+```
+
+_Caveat_: it is currently not possible to persist this filter later as an mmap file.
 
 ## Docs
 
 Current docs are available at [pybloomfiltermmap3.rtfd.io](https://pybloomfiltermmap3.readthedocs.io/en/latest).
 
-
 ## Install
 
 To install:
 
-```shell
-    $ pip install pybloomfiltermmap3
+```bash
+pip install pybloomfiltermmap3
 ```
 
 and you should be set.
@@ -61,7 +73,6 @@ and you should be set.
 ### Note to Python 2 to < 3.5 users
 
 This library is specifically meant for Python 3.5 and above. [As of 2020](https://www.python.org/doc/sunset-python-2/), we strongly advise you to switch to an actively maintained distribution of Python 3. If for any reason your current environment is restricted to Python 2, please see [pybloomfiltermmap](https://github.com/axiak/pybloomfiltermmap). Please note that the latter is not actively maintained and will lack bug fixes and new features.
-
 
 ## History and Future
 
@@ -71,18 +82,47 @@ Some new features and changes were first introduced in version `0.5.0`. From thi
 
 Suggestions, bug reports, and / or patches are welcome!
 
-
 ## Contributions and development
 
 When contributing, you should set up an appropriate Python 3 environment and install the dependencies listed in `requirements-dev.txt`.
 Package installation depends on a generated `pybloomfilter.c` file, which requires Cython module to be in your current environment.
 
+### Environment setup
+
+```bash
+# Installs the venv and python3-dev packages
+sudo apt install python3.10-venv python3-dev
+
+# Creates a virtual env called "env"
+python -m venv env
+
+# Activates the created virtual env
+source ./env/bin/activate
+```
+
+### Dependencies
+
+```bash
+python -m pip install --upgrade pip
+pip install cython
+```
+
+### Build
+
+```bash
+python setup.py develop
+```
+
+### Test
+
+```bash
+python setup.py test
+```
 
 ## Maintainers
 
-* [Prashant Sinha](https://github.com/prashnts)
-* [Vytautas Mizgiris](https://github.com/vmizg)
-
+- [Prashant Sinha](https://github.com/prashnts)
+- [Vytautas Mizgiris](https://github.com/vmizg)
 
 ## License
 
