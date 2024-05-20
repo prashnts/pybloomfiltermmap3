@@ -16,6 +16,7 @@ Contributors
 - gaetano-guerriero: fixed base64 dumps
 - gonzalezzfelipe: fixed buggy "copy_template" method
 - xyb: added bit_count and approximation of set elements.
+- stevesimmons: pickleable bloom filters
 
 .. _axiak: https://github.com/axiak
 .. _prashnts: https://github.com/prashnts
