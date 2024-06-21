@@ -8,6 +8,17 @@
 
 #include "bloomfilter.h"
 
+/* Available hashing algorithms */
+#define HASHALG_SHA512 1
+#define HASHALG_SUPERFAST 2
+#define HASHALG_MURMURHASH3 3
+#define HASHALG_XXHASH32 4
+#define HASHALG_XXHASH64 5
+
+/* We're using xxHash */
+#define HASHING_ALGORITHM HASHALG_XXHASH64
+
+
 BloomFilter *bloomfilter_Create_Malloc(size_t max_num_elem, double error_rate,
                                 BTYPE num_bits, int *hash_seeds, int num_hashes, const char *data)
 {
@@ -176,11 +187,9 @@ BTYPE _hash_long(uint32_t hash_seed, Key * key) {
     return _hash_char(hash_seed, &newKey);
 }
 
-/*
-CODE TO USE SHA512..
+#if HASHING_ALGORITHM == HASHALG_SHA512
 #include <openssl/evp.h>
-
-uint32_t _hash_char(uint32_t hash_seed, Key * key) {
+BTYPE _hash_char(uint32_t hash_seed, Key * key) {
     EVP_MD_CTX ctx;
     unsigned char result_buffer[64];
 
@@ -193,9 +202,9 @@ uint32_t _hash_char(uint32_t hash_seed, Key * key) {
     EVP_MD_CTX_cleanup(&ctx);
     return *(uint32_t *)result_buffer;
 }
-*/
+#endif
 
-/* Code for MurmurHash3 */
+#if HASHING_ALGORITHM == HASHALG_MURMURHASH3
 #include "MurmurHash3.h"
 BTYPE _hash_char(uint32_t hash_seed, Key * key) {
     BTYPE hashed_pieces[2];
@@ -203,7 +212,28 @@ BTYPE _hash_char(uint32_t hash_seed, Key * key) {
                        hash_seed, &hashed_pieces);
     return hashed_pieces[0] ^ hashed_pieces[1];
 }
+#endif
 
+#if HASHING_ALGORITHM == HASHALG_SUPERFAST
+#include "superfast.h"
+BTYPE _hash_char(uint32_t hash_seed, Key * key) {
+	return SuperFastHash(key->shash, key->nhash, hash_seed);
+}
+#endif
+
+#if HASHING_ALGORITHM == HASHALG_XXHASH32
+#include "xxhash.h"
+BTYPE _hash_char(uint32_t hash_seed, Key * key) {
+    return XXH32(key->shash, key->nhash, hash_seed);
+}
+#endif
+
+#if HASHING_ALGORITHM == HASHALG_XXHASH64
+#include "xxhash.h"
+BTYPE _hash_char(uint32_t hash_seed, Key * key) {
+    return XXH64(key->shash, key->nhash, hash_seed);
+}
+#endif
 
 #if 0
 int main(int argc, char **argv)
