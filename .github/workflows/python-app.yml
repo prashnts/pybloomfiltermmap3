@@ -27,4 +27,4 @@ jobs:
         python setup.py develop
     - name: Run Tests
       run: |
-        python setup.py test
+        python -m unittest discover -s tests -p "*.py"

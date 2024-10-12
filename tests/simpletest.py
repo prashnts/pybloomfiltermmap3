@@ -416,6 +416,5 @@ class SimpleTestCase(unittest.TestCase):
         self.assertEqual(bf.bit_array, unpickled.bit_array)
 
 def suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(SimpleTestCase))
-    return suite
+    loader = unittest.TestLoader()
+    return loader.loadTestsFromTestCase(SimpleTestCase)

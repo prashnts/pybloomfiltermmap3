@@ -65,7 +65,6 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="MIT License",
-    test_suite="tests.test_all",
     ext_modules=ext_modules,
     python_requires=">=3.5, <4",
     classifiers=[
