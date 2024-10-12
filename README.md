@@ -116,7 +116,7 @@ python setup.py develop
 ### Test
 
 ```bash
-python setup.py test
+python -m unittest discover -s tests -p "*.py"
 ```
 
 ## Maintainers
