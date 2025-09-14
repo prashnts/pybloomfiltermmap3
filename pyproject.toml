@@ -1,0 +1,36 @@
+[project]
+name = "pybloomfiltermmap3"
+version = "0.6.1"
+authors = [
+  { name="Prashant Sinha", email="prashant@noop.pw" },
+]
+description = "A fast implementation of Bloom filter for Python 3 built on mmap"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "MIT",
+    "Programming Language :: C",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/prashnts/pybloomfiltermmap3"
+Issues = "https://github.com/prashnts/pybloomfiltermmap3/issues"
+
+[build-system]
+requires = ["setuptools", "cython"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "build>=1.3.0",
+    "twine>=6.2.0",
+]
