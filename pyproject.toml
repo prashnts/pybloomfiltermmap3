@@ -1,6 +1,6 @@
 [project]
 name = "pybloomfiltermmap3"
-version = "0.6.2"
+version = "0.6.3"
 authors = [
   { name="Prashant Sinha", email="prashant@noop.pw" },
 ]
