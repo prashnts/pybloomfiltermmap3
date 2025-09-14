@@ -402,7 +402,7 @@ class SimpleTestCase(unittest.TestCase):
         assert intersection == 11  # approximate size
 
     def test_pickle(self):
-        bf = pybloomfilter.BloomFilter(100, 0.1)
+        bf = pybloomfilter.BloomFilter(1_000_000, 0.01)
         bf.add('apple')
         assert 'apple' in bf
         assert 'hello' not in bf
@@ -417,5 +417,5 @@ class SimpleTestCase(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(SimpleTestCase))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(SimpleTestCase))
     return suite

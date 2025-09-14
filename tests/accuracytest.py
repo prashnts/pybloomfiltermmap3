@@ -156,8 +156,8 @@ class IntegerAccuracyMmapTestCase(unittest.TestCase, TestAccuracyMixin):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(StringAccuracyMmapTestCase))
-    suite.addTest(unittest.makeSuite(StringAccuracyMallocTestCase))
-    suite.addTest(unittest.makeSuite(IntegerAccuracyMmapTestCase))
-    suite.addTest(unittest.makeSuite(IntegerAccuracyMallocTestCase))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(StringAccuracyMmapTestCase))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(StringAccuracyMallocTestCase))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(IntegerAccuracyMmapTestCase))
+    suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(IntegerAccuracyMallocTestCase))
     return suite

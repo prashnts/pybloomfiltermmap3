@@ -1,6 +1,6 @@
 # cython: language_level=3
 
-VERSION = (0, 6, 1)
+VERSION = (0, 6, 2)
 AUTHOR = "Michael Axiak"
 
 __VERSION__ = VERSION
@@ -150,7 +150,7 @@ cdef class BloomFilter:
                 (num_hashes * (math.log(2) ** 2)))
 
         # Minimum bit vector of 128 bits
-        num_bits = max(num_hashes * bits_per_hash,128)
+        num_bits = max(math.ceil(num_hashes * bits_per_hash / 8.0) * 8, 128)
 
         # Override calculated capacity if we are provided a data array
         if data_array is not None:
