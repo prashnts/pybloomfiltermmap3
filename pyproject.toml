@@ -34,3 +34,11 @@ dev = [
     "setuptools>=80.9.0",
     "twine>=6.2.0",
 ]
+
+[tool.cibuildwheel]
+skip = "cp3??t-*"
+test-sources = ["tests"]
+test-command = "python -m tests"
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
