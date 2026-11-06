@@ -1,6 +1,8 @@
+import sys
 import unittest
 from . import test_all
 
 if __name__ == '__main__':
     runner = unittest.TextTestRunner()
-    runner.run(test_all())
+    result = runner.run(test_all())
+    sys.exit(not result.wasSuccessful())

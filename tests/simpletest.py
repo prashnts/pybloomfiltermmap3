@@ -92,9 +92,6 @@ class SimpleTestCase(unittest.TestCase):
                                                len(self._not_in_filter),
                                                error_rate,
                                                100 * self.FILTER_ERROR_RATE))
-        for item in self._not_in_filter:
-            # We should *never* have a false negative
-            self.assertFalse(item in bf, '%r WAS in %r' % (item, bf))
 
     def test_repr(self):
         self.assertEqual(
