@@ -23,7 +23,7 @@ Changed
 
 Fixes
 ^^^^^
-- Removed a flaky test assert on false positives; test runner exits non-zero on failure.
+- Fixed flaky tests (false positives, hash collisions on bit count); test runner exits non-zero on failure.
 
 
 `0.6.3`_ (2024-09-14)

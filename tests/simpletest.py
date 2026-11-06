@@ -308,10 +308,9 @@ class SimpleTestCase(unittest.TestCase):
             if c == "1":
                 total_ones += 1
 
-        # For the first item addition, BF should contain
-        # the same amount of 1s as the number of hashes
-        # performed
-        assert total_ones == bf.num_hashes
+        # For the first item addition, BF should contain at most as many 1s
+        # as hashes performed (fewer when two hashes hit the same bit)
+        assert 1 <= total_ones <= bf.num_hashes
 
         for i in range(1000):
             bf.add(randint(0, 1000))
@@ -379,7 +378,8 @@ class SimpleTestCase(unittest.TestCase):
             bf100.add(str(i))
 
         assert bf0.bit_count == 0
-        assert bf1.bit_count == bf1.num_hashes
+        assert 1 <= bf1.bit_count <= bf1.num_hashes
+        assert bf1.bit_count == bin(bf1.bit_array).count('1')
         assert bf100.bit_count == bin(bf100.bit_array).count('1')
 
     def test_approximate_size_after_union_called(self):
