@@ -29,11 +29,8 @@ requires = ["setuptools", "cython"]
 build-backend = "setuptools.build_meta"
 
 [dependency-groups]
-dev = [
-    "build>=1.3.0",
-    "setuptools>=80.9.0",
-    "twine>=6.2.0",
-]
+dev = ["build", "cython"]
+docs = ["sphinx", "sphinx-rtd-theme"]
 
 [tool.cibuildwheel]
 skip = "cp3??t-*"

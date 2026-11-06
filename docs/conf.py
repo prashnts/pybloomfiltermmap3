@@ -21,8 +21,10 @@ project = 'pybloomfiltermmap3'
 copyright = '2010 - 2019, Michael Axiak, Prashant Sinha, Vytautas Mizgiris and others'
 author = 'Michael Axiak, Prashant Sinha, Vytautas Mizgiris and others'
 
-# The full version, including alpha/beta/rc tags
-release = '0.5.2'
+# The full version, read from pyproject.toml
+import pathlib, tomllib
+_pyproject = pathlib.Path(__file__).parent.parent / 'pyproject.toml'
+release = tomllib.loads(_pyproject.read_text())['project']['version']
 version = 'latest'
 
 
@@ -54,15 +56,11 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = 'sphinx_rtd_theme'
 
-# Read The Docs theme options
-html_theme_options = {
-    "display_version": True,
-}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 
 # -- Options for LaTeX output --------------------------------------------------

@@ -17,7 +17,8 @@ Added
 
 Changed
 ^^^^^^^
-- Requires Python 3.10+; metadata only in pyproject.toml.
+- Requires Python 3.10+; metadata and dev/docs deps only in pyproject.toml.
+- Read the Docs config updated; docs version read from pyproject.toml.
 
 Fixes
 ^^^^^

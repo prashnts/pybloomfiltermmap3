@@ -61,3 +61,4 @@ target/
 pybloomfilter.c
 
 .python-version
+docs/_build/

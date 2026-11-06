@@ -84,40 +84,21 @@ Suggestions, bug reports, and / or patches are welcome!
 
 ## Contributions and development
 
-When contributing, you should set up an appropriate Python 3 environment and install the dependencies listed in `requirements-dev.txt`.
-Package installation depends on a generated `pybloomfilter.c` file, which requires Cython module to be in your current environment.
-
-### Environment setup
+Needs a C compiler and Python 3 headers (e.g. `python3-dev`). With [uv](https://docs.astral.sh/uv/):
 
 ```bash
-# Installs the venv and python3-dev packages
-sudo apt install python3.10-venv python3-dev
-
-# Creates a virtual env called "env"
-python -m venv env
-
-# Activates the created virtual env
-source ./env/bin/activate
+uv sync                        # venv + build the extension + dev deps
+uv run python -m tests         # test
+uv run --group docs sphinx-build docs docs/_build   # docs
 ```
 
-### Dependencies
+Or plain pip: `pip install .` then `python -m tests`.
 
-```bash
-python -m pip install --upgrade pip
-pip install cython
-```
+### Releasing
 
-### Build
-
-```bash
-python setup.py develop
-```
-
-### Test
-
-```bash
-python setup.py test
-```
+Bump `version` in `pyproject.toml`, add a CHANGELOG entry, then push a tag
+`vX.Y.Z`. The Release workflow builds wheels and the sdist, and publishes to PyPI
+(Trusted Publishing) after approval.
 
 ## Maintainers
 
