@@ -6,7 +6,7 @@ authors = [
 ]
 description = "A fast implementation of Bloom filter for Python 3 built on mmap"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",

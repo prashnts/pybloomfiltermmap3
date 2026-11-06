@@ -12,8 +12,12 @@ Unreleased
 
 Added
 ^^^^^
-- Wheels for Linux (x86_64, aarch64, musl) and macOS (x86_64, arm64), CPython 3.9-3.15.
+- Wheels for Linux (x86_64, aarch64, musl) and macOS (x86_64, arm64), CPython 3.10-3.15.
 - Release workflow with PyPI Trusted Publishing; CI on 3.10-3.15.
+
+Changed
+^^^^^^^
+- Requires Python 3.10+; metadata only in pyproject.toml.
 
 Fixes
 ^^^^^
